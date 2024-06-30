@@ -29,9 +29,9 @@ def reLst(lst: list):
 
 
 if __name__ == '__main__':
-    lst = [9, 8, 65, 23, 63, 558, 2, 7777]
-    print(lst)
-    reLst(lst)
+    lst = [0, 232, 323, 3, 2, 43, 5, 6, 4, 5, 35, 4, 312, 3, 24, 3]
+    # print(lst)
+    # reLst(lst)
 
     print(lst)
     mergeSort(lst, 0, len(lst) - 1)
