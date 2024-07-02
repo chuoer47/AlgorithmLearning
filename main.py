@@ -1,38 +1,24 @@
-# 归并排序
-def mergeSort(lst: list, begin: int, end: int):
-    if end == begin:  # 只有一个元素
-        return
-    mid = (begin + end) >> 1
-    mergeSort(lst, begin, mid)
-    mergeSort(lst, mid + 1, end)
-    l, r = begin, mid + 1
-    tem = []
-    while l <= mid and r <= end:
-        if lst[l] >= lst[r]:
-            tem.append(lst[r])
-            r += 1
-        else:
-            tem.append(lst[l])
-            l += 1
-    if l <= mid:
-        tem.extend(lst[l:mid + 1])
-    if r <= end:
-        tem.extend(lst[r:end + 1])
-    lst[begin:end + 1] = tem
+rl = lambda: list(map(int, input().split()))
+n = int(input())
+a = rl()
+b = rl()
+c = rl()
 
+# a > b + c
+def win(a, b, c):
+  w = sorted(
+    (x - y - z for x, y, z in zip(a, b, c)),
+    reverse=True
+  )
 
-def reLst(lst: list):
-    t = [(i, lst[i]) for i in range(len(lst))]
-    t.sort(key=lambda x: x[1])
-    for i in range(len(lst)):
-        lst[t[i][0]] = i
+  cnt, diff = -1, 0
+  for i in range(n):
+    if diff + w[i] <= 0:
+      break
 
+    cnt = i + 1
+    diff += w[i]
 
-if __name__ == '__main__':
-    lst = [0, 232, 323, 3, 2, 43, 5, 6, 4, 5, 35, 4, 312, 3, 24, 3]
-    # print(lst)
-    # reLst(lst)
+  return cnt
 
-    print(lst)
-    mergeSort(lst, 0, len(lst) - 1)
-    print(lst)
+print(max(win(a, b, c), win(b, a, c), win(c, a, b)))
