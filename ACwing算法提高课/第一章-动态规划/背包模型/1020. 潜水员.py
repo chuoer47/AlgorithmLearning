@@ -1,3 +1,7 @@
+"""
+https://www.acwing.com/problem/content/description/1022/
+"""
+
 m,n = map(int,input().strip().split(" "))
 k = int(input())
 lst = [list(map(int,input().strip().split(" "))) for _ in range(k)]
