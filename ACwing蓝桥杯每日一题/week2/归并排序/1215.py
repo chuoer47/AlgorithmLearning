@@ -45,12 +45,12 @@ def merge_sort(lst, left, right):
 n = int(input())
 lst = list(map(int, input().split()))
 re_lst(lst)
-# print(lst)
+print(lst)
 tem = [0 for i in range(0, n)]
 dict_lst = {i: 0 for i in range(0, n)}
 merge_sort(lst, 0, n - 1)
 res = 0
-# print(dict_lst)
+print(dict_lst)
 for v in dict_lst.values():
     res += ((1+v)*v) // 2
 print(res)

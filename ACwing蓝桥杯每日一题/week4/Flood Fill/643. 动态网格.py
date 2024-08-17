@@ -48,14 +48,14 @@ for case in range(T):
                 lst[i][j] = 1
     N = int(input())
     operate = [list(input().split(" ")) for _ in range(N)]
+    hasM = False
+    print("Case #{}:".format(case + 1))
     for op in operate:
         if op[0] == "Q":
-            res = solve()  # 广搜
-            last = res
-            output.append(res)
+            if hasM:
+                res = solve()  # 广搜
+            print(res)
         else:
             x, y, z = map(int, op[1:])
             lst[x][y] = z
-    print("Case #{}:".format(case + 1))
-    for out in output:
-        print(out)
+            hasM = True

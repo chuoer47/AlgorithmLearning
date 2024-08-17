@@ -55,7 +55,4 @@ for op in operate:
     else:
         draw_line(op[1:])
 for i in range(n):
-    s = ""
-    for j in range(m):
-        s += draw[i][j]
-    print(s)
+    print("".join(draw[i]))

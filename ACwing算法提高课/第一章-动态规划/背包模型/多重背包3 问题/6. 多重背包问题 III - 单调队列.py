@@ -27,7 +27,7 @@ if __name__ == '__main__':
     print(dp[v])
 
 """
-下面是优化常数过来的代码！
+下面是优化常数过了的代码！
 
 from collections import deque
 

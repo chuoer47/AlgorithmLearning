@@ -6,9 +6,6 @@ https://www.acwing.com/problem/content/description/1264/
 def work(end, t):
     """
     该方法为计算从0~end个鱼塘在时间t中能掉到的最大的鱼的数量。
-    :param end:
-    :param t:
-    :return:
     """
     if t <= 0:
         return 0

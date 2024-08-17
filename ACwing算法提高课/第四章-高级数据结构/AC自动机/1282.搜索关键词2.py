@@ -50,7 +50,7 @@ class ACTire:
         while q:
             nowNum = len(q)  # 记录当前层需要遍历的次数
             for _ in range(nowNum):
-                cur: ACTireNode = q.popleft()
+                cur:ACTireNode = q.popleft()
                 if depth == 1:
                     cur.fail = self.root
                 elif depth > 1:  # 遍历更深层次的情况

@@ -11,6 +11,7 @@ s = input()
 n = len(s)
 l = [0] * n
 r = [0] * n
+
 # 从左到右进行遍历
 cnt = [-1] * 26  # 存取a~z最近的下标
 for i in range(0, n):
@@ -21,6 +22,7 @@ for i in range(0, n):
     else:
         l[i] = i - cnt[pivot] - 1
         cnt[pivot] = i
+
 # 从右到左进行遍历
 cnt = [-1] * 26
 for i in range(n - 1, -1, -1):
