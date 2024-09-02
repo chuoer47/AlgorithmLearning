@@ -1,6 +1,6 @@
 """
 https://www.acwing.com/problem/content/description/1291/
-语法题...
+签到题...
 """
 mod = 200907
 if __name__ == '__main__':
