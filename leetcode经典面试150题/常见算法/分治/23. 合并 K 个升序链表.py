@@ -1,16 +1,5 @@
-# Definition for singly-linked list.
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-
-from heapq import *
-from typing import Optional, List
-
-
+ListNode.__lt__ = lambda a,b : a.val < b.val
 class Solution:
-    List.__lt__ = lambda a,b : a.val < b.val
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         heap = [node for node in lists if node]
         heapify(heap)
@@ -18,9 +7,10 @@ class Solution:
         ans = ListNode()
         tail = ans
         while heap:
-            val, node = heappop(heap)
+            node = heappop(heap)
             tail.next = node
+            tail = tail.next
             node = node.next
             if node:
-                heappush(heap, (node.val, node))
+                heappush(heap, node)
         return ans.next
