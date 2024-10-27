@@ -1,26 +1,20 @@
-# Definition for singly-linked list.
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-
-from heapq import *
-from typing import Optional, List
+from typing import List
 
 
 class Solution:
-    List.__lt__ = lambda a,b : a.val < b.val
-    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        heap = [node for node in lists if node]
-        heapify(heap)
+    def maxScore(self, n: int, k: int, stayScore: List[List[int]], travelScore: List[List[int]]) -> int:
+        dp = [[0] * n for _ in range(k)]
+        for i in range(n):
+            dp[0][i] = stayScore[0][i]
 
-        ans = ListNode()
-        tail = ans
-        while heap:
-            val, node = heappop(heap)
-            tail.next = node
-            node = node.next
-            if node:
-                heappush(heap, (node.val, node))
-        return ans.next
+        for i in range(1, k):
+            for j in range(n):
+                dp[i][j] = max(dp[i][j], dp[i - 1][j] + stayScore[i][j])
+                for t in range(n):
+                    dp[i][j] = max(dp[i][j], dp[i - 1][t] + travelScore[t][j])
+        return max(dp[-1])
+
+
+if __name__ == '__main__':
+    s = Solution()
+    print(s.maxScore(n=2, k=1, stayScore=[[1, 1]], travelScore=[[0, 1], [6, 0]]))
