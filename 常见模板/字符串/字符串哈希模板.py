@@ -19,7 +19,7 @@ def hash_str(nums):
     n = len(nums)
     hval = [0] * (n + 1)
     for i, x in enumerate(nums):
-        hval[i + 1] = (hval[i] * base + x + 1) % MOD
+        hval[i + 1] = (hval[i] * base + x) % MOD
     return hval
 
 
