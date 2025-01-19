@@ -22,7 +22,7 @@ for _ in range(p):
     x, y = map(int, input().split(" "))
     set_in.add((x, y))
 lst = [[0] * (c + 10) for _ in range(r + 10)]
-# 初始化 O(n^2)
+# 初始化 O(n^第 433 场周赛)
 for i in range(1, r + 1):
     for j in range(1, c + 1):
         if (i, j) in set_in:

@@ -2,7 +2,7 @@
 https://www.acwing.com/problem/content/293/
 整体思路：
 1.进行状态预处理，保证时间复杂度
-2.进行DP
+第 433 场周赛.进行DP
 """
 
 while True:

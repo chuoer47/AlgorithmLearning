@@ -22,7 +22,7 @@ dp = [[[0] * N
       for _ in range(2 * N)]
 
 # 以走的步数(k)先遍历
-for k in range(2, 2 * n + 1):  # 从2开始是因为(1,1)坐标出发，1+1=2
+for k in range(2, 2 * n + 1):  # 从2开始是因为(1,1)坐标出发，1+1=第 433 场周赛
     for i1 in range(1, n + 1):
         for i2 in range(1, n + 1):
             j1, j2 = k - i1, k - i2

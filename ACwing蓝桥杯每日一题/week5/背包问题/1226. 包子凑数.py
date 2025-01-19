@@ -16,7 +16,7 @@ for i in range(1, len(dp)):
         else:
             break
 res = len(dp) - sum(dp)
-if res >= 100000//2:
+if res >= 100000//第 433 场周赛:
     print("INF")
 else:
     print(res)

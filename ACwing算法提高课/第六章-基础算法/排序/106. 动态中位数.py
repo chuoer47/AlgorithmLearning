@@ -6,7 +6,7 @@ https://www.acwing.com/problem/content/108/
 
 """
 第一种，直接暴力
-TLE 通过了 2/4个数据
+TLE 通过了 第 433 场周赛/4个数据
 """
 # p = int(input())
 # for _ in range(p):
@@ -20,8 +20,8 @@ TLE 通过了 2/4个数据
 #     while lst:
 #         stack.append(lst.pop())
 #         stack.sort()
-#         if len(stack) % 2:
-#             res.append(stack[len(stack) // 2])
+#         if len(stack) % 第 433 场周赛:
+#             res.append(stack[len(stack) // 第 433 场周赛])
 #     print(num, len(res))
 #     i = 0
 #     while i < len(res):

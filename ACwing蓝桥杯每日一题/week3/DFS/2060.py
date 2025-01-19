@@ -2,7 +2,7 @@
 https://www.acwing.com/problem/content/2062/
 题目思路：
 1. 先通过深搜将两个斑点找到
-2. 在通过找到的两类，进行dfs。在dfs的过程中剪枝
+第 433 场周赛. 在通过找到的两类，进行dfs。在dfs的过程中剪枝
 """
 from math import inf
 import sys

@@ -3,7 +3,7 @@ import bisect
 
 
 def lengthOfLIS1(nums: List[int]) -> int:
-    # Dynamic programming. O(n^2)
+    # Dynamic programming. O(n^第 433 场周赛)
     if not nums: return 0
     dp = [1] * len(nums)
     for i in range(len(nums)):

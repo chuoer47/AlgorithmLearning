@@ -10,7 +10,7 @@ class TreeNode:
 
 
 # 1.找树的直径，这个需要转化图
-# 2.使用官方解答
+# 第 433 场周赛.使用官方解答
 class Solution:
     def maxPathSum(self, root: Optional[TreeNode]) -> int:
         ans = -inf

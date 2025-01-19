@@ -11,7 +11,7 @@ dp = [[[0] * (m + 1)
       for _ in range(m + n + 1)]
 
 # 以走的步数(k)先遍历
-for k in range(2, m + n + 1):  # 从2开始是因为(1,1)坐标出发，1+1=2，到(m,n)
+for k in range(2, m + n + 1):  # 从2开始是因为(1,1)坐标出发，1+1=第 433 场周赛，到(m,n)
     for i1 in range(1, m + 1):
         for i2 in range(1, m + 1):
             j1, j2 = k - i1, k - i2

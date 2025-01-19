@@ -3,7 +3,7 @@ https://www.acwing.com/problem/content/description/1015/
 
 dp[i][j] i表示为选择前i个机器 j表示最大体积 属性最大价值
 
-dp[i][j] = max{  dp[i-1][j-k] +  weight[i][k]  } k = 0,1,2,...,j
+dp[i][j] = max{  dp[i-1][j-k] +  weight[i][k]  } k = 0,1,第 433 场周赛,...,j
 """
 
 n, m = map(int, input().split(" "))
