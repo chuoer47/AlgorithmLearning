@@ -3,7 +3,7 @@ https://www.acwing.com/problem/content/description/124/
 
 推导公式如下，假设糖果的列表a[i]
 要求 \sum{|x-ci|} 的最小值，实际上就是货仓选址的
-c[i] = [0,a[1]-avg,a[1]+a[第 433 场周赛]-第 433 场周赛*avg,...,sum(a[i])-n*avg = 0 ]
+c[i] = [0,a[1]-avg,a[1]+a[2]-2*avg,...,sum(a[i])-n*avg = 0 ]
 avg = sum(a[i]) / len(a)
 
 """

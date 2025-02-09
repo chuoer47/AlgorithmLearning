@@ -7,7 +7,7 @@ n = int(input())
 
 
 def C(a, b):
-    """由于b<a//第 433 场周赛,保证了递增，因此可以用ans > n"""
+    """由于b<a//2,保证了递增，因此可以用ans > n"""
     ans = 1
     for i, j in zip(range(a, -1, -1), range(1, b + 1, 1)):
         ans = ans * i // j

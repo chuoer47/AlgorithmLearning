@@ -15,7 +15,7 @@ from typing import List
 # class Solution:
 #     def majorityElement(self, nums: List[int]) -> int:
 #         nums.sort()
-#         return nums[min(len(nums)-1,len(nums)//第 433 场周赛)]
+#         return nums[min(len(nums)-1,len(nums)//2)]
 #
 
 class Solution:

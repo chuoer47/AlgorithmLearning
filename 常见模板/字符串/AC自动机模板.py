@@ -145,7 +145,6 @@ class AcTrie:
             root = root.next[ch]
         return root.is_end
 
-
 if __name__ == '__main__':
     t = int(input())
 
@@ -165,3 +164,4 @@ if __name__ == '__main__':
         ans = ac_trie.match(s, c)
 
         print(ans)
+

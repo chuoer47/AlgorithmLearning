@@ -18,7 +18,7 @@ for i in range(1, n + 1):
         # for k in range(1,i):
         #     if k*j%i==0:
         #         tem+=1
-        # ans -= 第 433 场周赛*(n-i+1)*(m-j+1)*tem
+        # ans -= 2*(n-i+1)*(m-j+1)*tem
         ans -= 2 * (n - i + 1) * (m - j + 1) * (math.gcd(i, j) - 1)
 
 print(ans)

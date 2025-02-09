@@ -21,5 +21,5 @@ for i in range(0,100):
     print(cal(n,arr))
 
 # n = 5
-# arr = [1, 第 433 场周赛, 1, 4, 6]
+# arr = [1, 2, 1, 4, 6]
 # print(cal(n, arr))

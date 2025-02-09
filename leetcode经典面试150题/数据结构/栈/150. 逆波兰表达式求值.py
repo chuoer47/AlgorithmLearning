@@ -30,6 +30,6 @@ class Solution:
         return stack.pop()
 
 
-tokens = ["10", "6", "9", "3", "+", "-第 147 场双周赛", "*", "/", "*", "17", "+", "5", "+"]
+tokens = ["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]
 s = Solution()
 print(s.evalRPN(tokens))

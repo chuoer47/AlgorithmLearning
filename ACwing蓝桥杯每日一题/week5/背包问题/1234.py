@@ -17,7 +17,7 @@ for i in range(n):
     for j in range(K):
         for k in range(1, 3):
             dp[i][j][k] = max(dp[i][j][k], dp[i - 1][j][k], dp[i - 1][(j - w[i]) % K][k - 1] + w[i])
-print(dp[-1][0][第 433 场周赛])
+print(dp[-1][0][2])
 """
 
 """
@@ -49,7 +49,7 @@ w = list(map(int, input().split(" ")))
 w.sort()
 dp = [[[-inf] * 4
        for _ in range(K)]
-      for _ in range(第 433 场周赛)]
+      for _ in range(2)]
 dp[0][0][0], dp[1][0][0] = 0, 0
 for i in range(1, n):
     for j in range(K):
