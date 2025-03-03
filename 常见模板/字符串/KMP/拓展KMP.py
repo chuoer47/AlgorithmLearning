@@ -14,4 +14,5 @@ def z_function(s):
             r = i + z[i] - 1
     return z
 
-print(z_function("aaaaa"))
+
+print(z_function("ababab" + "abababababa"))
