@@ -20,8 +20,8 @@ def prefix_function(s):
 # 模式匹配如下：
 # t = input("输入你要匹配的字符串模式：")
 # s = input("输入你要匹配的字符串：")
-s = "goodgoogle"
-t = "google"
+s = "aaaaa"
+t = "aa"
 
 
 def KMP(s, t):
