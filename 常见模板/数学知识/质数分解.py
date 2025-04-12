@@ -1,3 +1,31 @@
+import math
+
+
+def prime_factorization(n):
+    """
+    对给定的正整数 n 进行质因数分解，并计算每个质因数的指数。
+
+    参数:
+    n (int): 待分解的正整数。
+
+    返回:
+    dict: 一个字典，键为质因数，值为该质因数在分解式中的指数。
+    """
+    factors = {}
+    divisor = 2
+    while divisor * divisor <= n:
+        exponent = 0
+        while n % divisor == 0:
+            exponent += 1
+            n = n // divisor
+        if exponent > 0:
+            factors[divisor] = exponent
+        divisor = divisor + 1
+    if n != 1:
+        factors[n] = 1
+    return factors
+
+
 def prime_factors(n):
     factor = []
     power = []
@@ -27,6 +55,7 @@ def prime_factors(n):
         power.append(1)
 
     return factor, power
+
 
 if __name__ == '__main__':
     # 示例

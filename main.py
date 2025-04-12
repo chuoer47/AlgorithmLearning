@@ -1,47 +1,62 @@
-from collections import defaultdict
-from typing import List
+from functools import lru_cache, cache
 
 
-class Node:
-    def __init__(self):
-        self.dic: defaultdict[str] = defaultdict(Node)
-        self.tail = False
-        self.target = {-1}
+# 预处理出来所有回文数字
+def check(x):
+    return str(x) == str(x)[::-1]
 
 
-class Trie:
-    def __init__(self):
-        self.root = Node()
+vaild = [i for i in range(1, 10) if check(i)]
 
-    def insert(self, word, idx):
-        n = len(word)
-        now = self.root
+for i in range(1, int(1e5 + 1)):
+    # 处理出来偶数长度的回文数字
+    n = int(str(i) + str(i)[::-1])
+    if check(n):
+        vaild.append(n)
+    # 处理出来奇数长度的回文数字
+    m = str(i)
+    n = int(m[:-1] + m[-1] + m[:-1][::-1])
+    if check(n):
+        vaild.append(n)
 
-        for i in range(n):
-            if word[i] not in now.dic:
-                now.dic[word[i]] = Node()
-            now = now.dic[word[i]]
-            now.target.add(idx)
-        now.tail = True
-
-    def search(self, word):
-        n = len(word)
-        now = self.root
-        for i in range(n):
-            now = now.dic[word[i]]
-        return now.target
+vaild = [x for x in set(vaild) if len(str(x)) <= 10]
 
 
 class Solution:
-    def countPrefixSuffixPairs(self, words: List[str]) -> int:
-        pre = Trie()
-        suff = Trie()
-        for i, word in enumerate(words):
-            pre.insert(word, i)
-            suff.insert(word[::-1], i)
+    @cache
+    def countGoodIntegers(self, n: int, k: int) -> int:
         ans = 0
-        for i, word in enumerate(words):
-            pre_set = pre.search(word)
-            suff_set = suff.search(word[::-1])
-            ans += len(pre_set & suff_set) - 1
+        nums = []
+        for x in vaild:
+            if len(str(x)) == n and x % k == 0:
+                nums.append(x)
+        vis = set()
+        mx = [0] * 10
+        for x in nums:
+            x = str(x)
+            cnt = []
+            for i in range(10):
+                p = x.count(str(i))
+                cnt.append(p)
+                mx[i] = max(mx[i], p)
+            vis.add(tuple(cnt))
+
+        @cache
+        def dfs(bit, limit, state: tuple):
+            ans = 0
+            for i in range(10):
+                if state[i] > mx[i]:
+                    return 0
+            if bit == 0:
+                if state in vis:
+                    return 1
+                return 0
+            for i in range(limit, 9 + 1):
+                o = list(state)
+                o[i] += 1
+                ans += dfs(bit=bit - 1, limit=0, state=tuple(o))
+            return ans
+
+        o = [0] * 10
+        ans = dfs(n, 1, tuple(o))
         return ans
