@@ -32,7 +32,8 @@ def simple(n, nums):
     nxt = nnxt
     nxt.sort()
     while len(nxt) > 2:
-        x, y = nxt.pop(), nxt.pop(),
+        x = nxt.pop()
+        y = nxt.pop()
         now = x + y
         idx = bisect_left(nxt, 6 - now)  # nxt[idx] + now >= 6 => nxt[idx] >= 6 - now
         if nxt and idx < len(nxt) and nxt[idx] + now >= 6:

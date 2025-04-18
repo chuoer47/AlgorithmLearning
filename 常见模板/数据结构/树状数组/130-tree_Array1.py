@@ -16,11 +16,11 @@ def getsum(x):
     return ans
 
 
+
 def add(pivot, v):
     while pivot <= n:
         c[pivot] += v
         pivot += lowbit(pivot)
-
 
 if __name__ == '__main__':
     n, q = map(int, input().strip().split(" "))
