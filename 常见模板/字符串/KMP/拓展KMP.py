@@ -1,4 +1,7 @@
 def z_function(s):
+    """
+    返回最大的前缀匹配长度
+    """
     n = len(s)
     z = [0] * n
     l, r = 0, 0
@@ -15,4 +18,5 @@ def z_function(s):
     return z
 
 
-print(z_function("ababab" + "abababababa"))
+if __name__ == '__main__':
+    print(z_function("ababab" + "abababababa"))
