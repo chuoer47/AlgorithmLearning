@@ -1,6 +1,7 @@
 """
 给出一个图，问其中的由 n 个节点构成的边权和最小的环 (n > 3) 是多大。
 """
+from cmath import inf
 
 maxn = 100
 val = [[0 for i in range(maxn + 1)] for j in range(maxn + 1)]  # 原图的邻接矩阵
