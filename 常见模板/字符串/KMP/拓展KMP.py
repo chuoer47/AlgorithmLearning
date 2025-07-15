@@ -18,5 +18,6 @@ def z_function(s):
     return z
 
 
+
 if __name__ == '__main__':
     print(z_function("ababab" + "abababababa"))
