@@ -1,76 +1,60 @@
-from functools import cache
+from collections import defaultdict
 from typing import List
 
 
-class LcaBinaryLifting:
-    def __init__(self, edges: List[List[int]]):
-        n = len(edges) + 1
-        m = n.bit_length()
-        g = [[] for _ in range(n)]
-        for x, y, w in edges:  # 节点编号从 0 开始
-            g[x].append((y, 1))
-            g[y].append((x, 1))
-
-        depth = [0] * n
-        dis = [0] * n
-        pa = [[-1] * m for _ in range(n)]
-
-        def dfs(x: int, fa: int) -> None:
-            pa[x][0] = fa
-            for y, w in g[x]:
-                if y != fa:
-                    depth[y] = depth[x] + 1
-                    dis[y] = dis[x] + w
-                    dfs(y, x)
-
-        dfs(0, -1)
-
-        for i in range(m - 1):
-            for x in range(n):
-                if (p := pa[x][i]) != -1:
-                    pa[x][i + 1] = pa[p][i]
-        self.depth = depth
-        self.dis = dis
-        self.pa = pa
-
-    def get_kth_ancestor(self, node: int, k: int) -> int:
-        for i in range(k.bit_length()):
-            if k >> i & 1:  # k 二进制从低到高第 i 位是 1
-                node = self.pa[node][i]
-        return node
-
-    # 返回 x 和 y 的最近公共祖先（节点编号从 0 开始）
-    def get_lca(self, x: int, y: int) -> int:
-        if self.depth[x] > self.depth[y]:
-            x, y = y, x
-        # 使 y 和 x 在同一深度
-        y = self.get_kth_ancestor(y, self.depth[y] - self.depth[x])
-        if y == x:
-            return x
-        for i in range(len(self.pa[x]) - 1, -1, -1):
-            px, py = self.pa[x][i], self.pa[y][i]
-            if px != py:
-                x, y = px, py  # 同时往上跳 2**i 步
-        return self.pa[x][0]
-
-    # 返回 x 到 y 的距离（最短路长度）
-    def get_dis(self, x: int, y: int) -> int:
-        return self.dis[x] + self.dis[y] - self.dis[self.get_lca(x, y)] * 2
+class Node:
+    def __init__(self):
+        self.dic = defaultdict(Node)
+        self.delete = False
+        self.s = '#'
+        self.end = False
 
 
 class Solution:
-    def sumOfDistancesInTree(self, n: int, edges: List[List[int]]) -> List[int]:
-        lcs = LcaBinaryLifting(edges)
-        ans = [0] * n
+    def deleteDuplicateFolder(self, paths: List[List[str]]) -> List[List[str]]:
+        root = Node()
+        for path in paths:
+            node = root
+            for x in path:
+                node = node.dic[x]
+                node.s = x
+            node.end = True
+        mapper = defaultdict(int)
 
-        @cache
-        def helper(x, y):
-            if x > y:
-                x, y = y, x
-            return lcs.get_dis(x, y)
+        def get_hash(node: Node) -> str:
+            if not node.dic:
+                return node.s
+            childs_hash = sorted([get_hash(child) for child in node.dic.values()])
+            childs_hash = "".join(childs_hash)
+            mapper[childs_hash] += 1
+            node_hash = node.s + "(" + childs_hash + ")"
+            return node_hash
 
-        for i in range(n):
-            for j in range(n):
-                ans[i] += helper(i, j)
+        def is_delete(node: Node) -> str:
+            if not node.dic:
+                return node.s
+            childs_hash = sorted([is_delete(child) for child in node.dic.values()])
+            childs_hash = "".join(childs_hash)
+            if mapper[childs_hash] >= 2:
+                node.delete = True
+            node_hash = node.s + "(" + childs_hash + ")"
+            return node_hash
 
-        return ans
+        get_hash(root)
+        is_delete(root)
+        print(mapper)
+        now = []
+        ans = []
+
+        def get_ans(node: Node):
+            if node.delete:
+                return
+            if node.end:
+                ans.append(now.copy())
+            for nxt in node.dic:
+                now.append(nxt)
+                get_ans(node.dic[nxt])
+                now.pop()
+
+        get_ans(root)
+        return ans[1:]
