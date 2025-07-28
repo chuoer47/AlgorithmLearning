@@ -11,4 +11,12 @@
 - New Online Judge - [ecustacm.cn](https://ecustacm.cn)
 - 力扣（LeetCode） - [全球极客挚爱的技术成长平台](https://leetcode.cn)
 
+## 算法模板
+详见 `algorithmTrain\算法资料`，已包含：
+- 动态规划
+- 图&树（二分图，环，生成树，最短路，LCA....）
+- 字符串（KMP，Z函数，哈希字符串）
+- 数学（质数，几何计算，快速幂，组合数学）
+- 数据结构（树状数组，RMQ，并查集，线段树）
+
 持续更新~
