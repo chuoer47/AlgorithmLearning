@@ -1,6 +1,8 @@
 # 代码示例：返回 [low, high] 中的恰好包含 target 个 0 的数字个数
 # 比如 digitDP(0, 10, 1) == 2
 # 要点：我们统计的是 0 的个数，需要区分【前导零】和【数字中的零】，前导零不能计入，而数字中的零需要计入
+from functools import cache
+
 def digitDP(low: int, high: int, target: int) -> int:
     low_s = list(map(int, str(low)))  # 避免在 dfs 中频繁调用 int()
     high_s = list(map(int, str(high)))
