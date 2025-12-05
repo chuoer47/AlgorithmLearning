@@ -1,4 +1,5 @@
 from collections import defaultdict
+from math import gcd
 
 
 def count_parallelograms(nums):
