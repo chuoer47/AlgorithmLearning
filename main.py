@@ -1,116 +1,115 @@
-import sys
 from collections import defaultdict
+from typing import List
+from math import gcd
 
-sys.setrecursionlimit(10**7)
 
-def solve():
-    n,m = map(int,input().split(" "))
-    mat = [list(map(int, input().split())) for _ in range(n)]
+# -------------------------- 预处理通用函数（核心计算逻辑封装） --------------------------
+def calculate_combination_count(count_list: List[int]) -> tuple:
+    """
+    预处理计算：给定一组边数列表，返回(总边对数, 共线边对数)
+    总边对数 = C(总边数, 2) = sum(count_list) * (sum(count_list)-1) // 2
+    共线边对数 = 求和 C(e, 2) （每个直线内的边数两两组合）
+    """
+    total_edges = sum(count_list)
+    total_pairs = total_edges * (total_edges - 1) // 2  # 所有边的两两组合数
+    collinear_pairs = sum(e * (e - 1) // 2 for e in count_list)  # 共线边的两两组合数
+    return total_pairs, collinear_pairs
 
-    # 每个变量 i 有两个字面量：
-    #   node = 2*i     表示 flip[i] == 0 (不翻)
-    #   node = 2*i + 1 表示 flip[i] == 1 (翻)
-    V = 2 * n
-    g = [[] for _ in range(V)]
-    rg = [[] for _ in range(V)]
-    edge_set = set()  # 用于去重边 (u,v)
 
-    def add_imp(u, v):
-        # 添加一条有向边 u -> v（并在反图中添加）
-        if u == v:  # 无意义的自环可以忽略
-            return
-        if (u, v) in edge_set:
-            return
-        edge_set.add((u, v))
-        g[u].append(v)
-        rg[v].append(u)
+def get_normalized_slope(p1: tuple, p2: tuple) -> tuple:
+    """通用函数：计算两点构成直线的标准化斜率（最简分数，分母为正）"""
+    x1, y1 = p1
+    x2, y2 = p2
+    dx = x2 - x1
+    dy = y2 - y1
 
-    # 对每一列 j，构造 value -> list of (row, state)
-    # state: 0 表示使用原列 mat[row][j]
-    #        1 表示使用翻转后该列 mat[row][m-j-1]
-    for j in range(m):
-        d = defaultdict(list)
-        # 收集该列所有行两种状态的值
-        for i in range(n):
-            val0 = mat[i][j]
-            val1 = mat[i][m - j - 1]
-            d[val0].append((i, 0))
-            # 注意：如果 val0 == val1，会在同一 value 下出现两个条目 (i,0) 和 (i,1)
-            d[val1].append((i, 1))
+    if dx == 0:  # 垂直线，斜率用(0,1)表示
+        return (0, 1)
+    if dy == 0:  # 水平线，斜率用(1,0)表示
+        return (1, 0)
 
-        # 对每个相同 value 的组，组内任意两个不同的行、状态组合不能同时成立
-        for lst in d.values():
-            k = len(lst)
-            if k <= 1:
-                continue
-            # 若组太大，可能产生 k^2 较多边；但这是问题本身的约束数
-            # 我们跳过相同行的配对（同一行两个状态之间不存在约束）
-            for a in range(k):
-                i, s = lst[a]
-                u = 2 * i + s
-                for b in range(a + 1, k):
-                    ii, t = lst[b]
-                    if i == ii:
-                        continue
-                    v = 2 * ii + t
-                    # 约束: 不能同时 (u 被选中) AND (v 被选中)
-                    # 转为 2-SAT: (not u) or (not v)
-                    # 即 u -> not v , v -> not u
-                    add_imp(u, 2 * ii + (1 - t))
-                    add_imp(v, 2 * i + (1 - s))
+    # 化简为最简分数并统一分母为正
+    g = gcd(abs(dy), abs(dx))
+    numerator, denominator = dy // g, dx // g
+    if denominator < 0:
+        numerator, denominator = -numerator, -denominator
 
-    # Kosaraju 求 SCC
-    visited = [False] * V
-    order = []
+    return (numerator, denominator)
 
-    def dfs(u):
-        visited[u] = True
-        for w in g[u]:
-            if not visited[w]:
-                dfs(w)
-        order.append(u)
 
-    for u in range(V):
-        if not visited[u]:
-            dfs(u)
+def get_line_params(p1: tuple, p2: tuple) -> tuple:
+    """计算直线的标准化（斜率, 截距），均为最简分数形式"""
+    slope = get_normalized_slope(p1, p2)
+    x1, y1 = p1
+    sn, sd = slope
 
-    comp = [-1] * V
-    cid = 0
-
-    def rdfs(u, c):
-        comp[u] = c
-        for w in rg[u]:
-            if comp[w] == -1:
-                rdfs(w, c)
-
-    for u in reversed(order):
-        if comp[u] == -1:
-            rdfs(u, cid)
-            cid += 1
-
-    # 检查矛盾
-    for i in range(n):
-        if comp[2 * i] == comp[2 * i + 1]:
-            print("No")
-            return
-
-    # 构建一个合法解：通常取 comp[lit_false] < comp[lit_true] 为 True/False 判定
-    # （Kosaraju 中 comp 值的大小序可用于决定）
-    ans = [0] * n
-    for i in range(n):
-        # 若 comp[false] < comp[true] ，则选 true (翻转)
-        # 这是常见的排序约定（若你怀疑，可小样例验证）
-        if comp[2 * i] < comp[2 * i + 1]:
-            ans[i] = 1
+    # 分类型计算截距
+    if slope == (0, 1):  # 垂直线
+        intercept = (x1, 1)
+    elif slope == (1, 0):  # 水平线
+        intercept = (y1, 1)
+    else:
+        # 截距公式：c = (y1*sd - sn*x1)/sd，化简为最简分数
+        intercept_num = y1 * sd - sn * x1
+        intercept_den = sd
+        if intercept_num == 0:
+            intercept = (0, 1)
         else:
-            ans[i] = 0
+            g = gcd(abs(intercept_num), abs(intercept_den))
+            intercept = (intercept_num // g, intercept_den // g)
 
-    print("Yes")
-    k = sum(ans)
-    print(k)
-    if k > 0:
-        print(*[i + 1 for i in range(n) if ans[i] == 1])
+    return slope, intercept
 
 
-if __name__ == "__main__":
-    solve()
+# -------------------------- 业务逻辑函数 --------------------------
+def count_parallelograms(points: List[List[int]]) -> int:
+    """计算点集中有效平行四边形的数量（排除共线情况）"""
+    n = len(points)
+    if n < 4:
+        return 0
+
+    # 键：中点(2x,2y)（避免浮点数）；值：{斜率: 该中点+斜率的边数}
+    mid_slope_count = defaultdict(lambda: defaultdict(int))
+
+    for i in range(n):
+        p1 = (points[i][0], points[i][1])
+        for j in range(i + 1, n):
+            p2 = (points[j][0], points[j][1])
+            mid = (p1[0] + p2[0], p1[1] + p2[1])
+            slope = get_normalized_slope(p1, p2)
+            mid_slope_count[mid][slope] += 1
+
+    total = 0
+    for mid in mid_slope_count:
+        slope_counts = list(mid_slope_count[mid].values())
+        # 调用预处理函数，直接获取总边对数和共线边对数
+        total_pairs, collinear_pairs = calculate_combination_count(slope_counts)
+        total += (total_pairs - collinear_pairs)
+
+    return total
+
+
+class Solution:
+    def countTrapezoids(self, points: List[List[int]]) -> int:
+        """计算点集中梯形的数量（梯形=有一组对边平行 - 平行四边形）"""
+        # 1. 统计「同一斜率」下「不同直线」的边数
+        slope_line_count = defaultdict(lambda: defaultdict(int))
+        n = len(points)
+        for i in range(n):
+            p1 = (points[i][0], points[i][1])
+            for j in range(i + 1, n):
+                p2 = (points[j][0], points[j][1])
+                slope, intercept = get_line_params(p1, p2)
+                slope_line_count[slope][intercept] += 1
+
+        # 2. 计算「有一组对边平行」的图形总数（调用预处理函数）
+        total_parallel_pairs = 0
+        for slope in slope_line_count:
+            line_counts = list(slope_line_count[slope].values())
+            total_pairs, collinear_pairs = calculate_combination_count(line_counts)
+            total_parallel_pairs += (total_pairs - collinear_pairs)
+
+        # 3. 扣除平行四边形数量，得到梯形数量
+        parallelogram_count = count_parallelograms(points)
+
+        return total_parallel_pairs - parallelogram_count
